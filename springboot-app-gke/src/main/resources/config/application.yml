@@ -1,0 +1,49 @@
+spring:
+  profiles:
+    active: localhost
+---
+spring:
+  profiles: localhost
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_example
+    username: springuser
+    password: ThePassword
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: update
+
+---
+spring:
+  profiles: docker
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database:3306/db
+    username: user
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: update
+
+---
+spring:
+  profiles: gke
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${CLOUDSQL_MYSQL_HOST}/easy-mvc-db
+    username: ${CLOUDSQL_MYSQL_USER}
+    password: ${CLOUDSQL_MYSQL_PASSWORD} 
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: update
+
+

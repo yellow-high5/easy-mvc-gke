@@ -1,0 +1,45 @@
+version: '3'
+services:
+
+  client:
+    build: ./vue-app-gke/.
+    container_name: vue
+    environment:
+      NODE_ENV: development
+    ports:
+      - 80:80
+    networks:
+      - frontend
+
+  api:
+    build: ./springboot-app-gke/.
+    container_name: springboot
+    depends_on: 
+      - database
+    ports:
+      - 8080:8080
+    networks:
+      - frontend
+      - backend
+
+
+  database:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+        MYSQL_DATABASE: db
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+    volumes: 
+      - ./mysql-db-local:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - backend
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge

@@ -59,7 +59,7 @@ export CLOUDSQL_MYSQL_HOST=$(gcloud sql instances describe mysql-service-gke --f
 export PROJECT_ID=$(gcloud config get-value project)
 
 # Dockerfileをビルドしてコンテナレジストリへイメージをプッシュする
-gcloud builds submit easy-mvc-gke/vue-app-gke --tag gcr.io/${PROJECT_ID}/vue-app-gke
+gcloud builds submit easy-mvc-gke/vuejs-app-gke --tag gcr.io/${PROJECT_ID}/vuejs-app-gke
 gcloud builds submit easy-mvc-gke/springboot-app-gke --tag gcr.io/${PROJECT_ID}/springboot-app-gke
 
 # リソースファイルをkubectlで適用(project-all-in-oneはmanifestsディレクトリにあるyamlをまとめたもの)

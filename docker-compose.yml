@@ -2,8 +2,8 @@ version: '3'
 services:
 
   client:
-    build: ./vue-app-gke/.
-    container_name: vue
+    build: ./vuejs-app-gke/.
+    container_name: vuejs
     environment:
       NODE_ENV: development
     ports:

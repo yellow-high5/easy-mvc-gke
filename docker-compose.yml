@@ -12,7 +12,10 @@ services:
       - frontend
 
   api:
-    build: ./springboot-app-gke/.
+    build: 
+      context: ./springboot-app-gke/.
+      args:
+        - DEPLOY_ENV=docker
     container_name: springboot
     depends_on: 
       - database

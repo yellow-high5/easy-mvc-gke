@@ -11,9 +11,11 @@ It helps you understand the approach of building a basic application consisting 
 You have to install Docker and Docker Compose on your local computer.  
 👉You need checking Kubernets Engine API and Service Networking API is enabled  
 cf. My Local Computer(MacBook Pro): Docker version 19.03.2, docker-compose version 1.24.1  
+Maybe, it takes a long time to `mvn install` in build stage of Dockerfile.  
 
 ```sh
 $ git clone [THIS_REPOSITORY_GIT_URL]
+$ docker-compose build
 $ docker-compose up -d
 ```
 

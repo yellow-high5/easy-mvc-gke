@@ -4,19 +4,19 @@ metadata:
   name: frontend
 spec:
   replicas: 3
-template:
-  metadata:
-    labels:
-      app:  easy-mvc
-      tier: frontend
-  spec:
-    containers:
-      name: vue
-      image: 
-    resources:
-      request:
-        cpu: 100m
-        memory: 100Mi
-    ports:
-      containerPort: 80
+  template:
+    metadata:
+      labels:
+        app:  easy-mvc
+        tier: frontend
+    spec:
+      containers:
+      - name: vue
+        image: gcr.io/${PROJECT_ID}/vuejs-app-gke
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 80
         

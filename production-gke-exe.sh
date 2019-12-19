@@ -38,7 +38,7 @@ gcloud services vpc-peerings connect \
     --network=gke-network \
     --project=[YOUR_PROJECT_ID]
 
-# MySQLインスタンス(プライベートIPアドレス割り当て)の作成
+# CloudSQL MySQLインスタンス(プライベートIPアドレス割り当て)の作成
 gcloud beta sql instances create mysql-service-gke \
   --tier=db-n1-standard-2 \
   --database-version=MYSQL_5_7 \
@@ -57,6 +57,8 @@ gcloud sql users create springboot \
 export CLOUDSQL_MYSQL_HOST=$(gcloud sql instances describe mysql-service-gke --format="value(ipAddresses[].ipAddress)")
 # 現在のプロジェクトID(=YOUR_PROJECT_ID)
 export PROJECT_ID=$(gcloud config get-value project)
+
+kubectl create configmap app-config --from-literal=db.host=${CLOUDSQL_MYSQL_HOST}
 
 # Dockerfileをビルドしてコンテナレジストリへイメージをプッシュする
 gcloud builds submit easy-mvc-gke/vuejs-app-gke --tag gcr.io/${PROJECT_ID}/vuejs-app-gke

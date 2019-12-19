@@ -5,10 +5,10 @@ metadata:
   labels:
     app: easy-mvc
     tier: backend
-  spec:
-    type: LoadBalancer
-    ports:
-      port: 8080
-    selector:
-      app: easy-mvc
-      tier: backend
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+  selector:
+    app: easy-mvc
+    tier: backend

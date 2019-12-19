@@ -49,6 +49,9 @@ gcloud beta sql instances create mysql-service-gke \
 gcloud sql users create springboot \
   --instance=mysql-service-gke \
   --password=p@ssw0rd
+# インスタンス上でeasy_mvc_dbという名前のデータベースを作成
+gcloud sql databases create easy_mvc_db \
+  --instance=mysql-service-gke
 
 
 

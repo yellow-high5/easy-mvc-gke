@@ -29,13 +29,13 @@ public class Application {
   // ユーザー作成
   @CrossOrigin
   @RequestMapping(path = "/users/new", method = RequestMethod.POST)
-    public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String email) {
-        User n = new User();
-        n.setName(name);
-        n.setEmail(email);
-        repository.save(n);
-        return "Saved";
-    }
+  public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String email) {
+      User n = new User();
+      n.setName(name);
+      n.setEmail(email);
+      repository.save(n);
+      return "Saved";
+  }
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);

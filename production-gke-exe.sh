@@ -61,7 +61,8 @@ export CLOUDSQL_MYSQL_HOST=$(gcloud sql instances describe mysql-service-gke --f
 # 現在のプロジェクトID(=YOUR_PROJECT_ID)
 export PROJECT_ID=$(gcloud config get-value project)
 
-kubectl create configmap app-config --from-literal=db.host=${CLOUDSQL_MYSQL_HOST}
+#ConfigMapを作成してマニュフェストファイルで利用する
+kubectl create configmap app-config --from-literal=project.id=${PROJECT_ID} --from-literal=db.host=${CLOUDSQL_MYSQL_HOST} 
 
 # Dockerfileをビルドしてコンテナレジストリへイメージをプッシュする
 gcloud builds submit easy-mvc-gke/vuejs-app-gke --tag gcr.io/${PROJECT_ID}/vuejs-app-gke

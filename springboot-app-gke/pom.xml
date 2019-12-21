@@ -52,7 +52,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-	 </dependencies>
+  </dependencies>
 
 	<!-- <dependencyManagement>
 		<dependencies>

@@ -1,8 +1,6 @@
 Easy MVC Application for Google Kubernetes Engine
 ====
 
-<img width="419" alt="overview" src="https://user-images.githubusercontent.com/14067398/52426649-adc8d700-2b41-11e9-9c26-59ee7671d1d9.png">
-
 ## What?
 This Project is Easy Simple Application(Vue.js + Spring Boot + MySQL) on GKE.  
 Kubernetes is container orchestration tool. GKE is a managed service that abstracts kubernetes so that even beginners of infrastructure can easily operate.  

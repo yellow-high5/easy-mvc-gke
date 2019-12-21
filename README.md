@@ -1,4 +1,7 @@
-# Easy MVC Application for Google Kubernetes Engine
+Easy MVC Application for Google Kubernetes Engine
+====
+
+<img width="419" alt="overview" src="https://user-images.githubusercontent.com/14067398/52426649-adc8d700-2b41-11e9-9c26-59ee7671d1d9.png">
 
 ## What?
 This Project is Easy Simple Application(Vue.js + Spring Boot + MySQL) on GKE.  
@@ -29,3 +32,8 @@ $ git clone [THIS_REPOSITORY_GIT_URL]
 $ sh production-gke-exe.sh
 $ kubectl create -f project-all-in-one.yml
 ```
+
+### If it works correctly...
+If you can access localhost or public ip on GKE Service, you should see the following screen.  
+
+![screenshot](https://user-images.githubusercontent.com/14067398/71311144-3dc4f600-2460-11ea-8f21-cd3cf736a6d0.png)

@@ -1,12 +1,46 @@
 <template>
-  <div>
-    <h1>MySQL DB Post Form</h1>
-    <label for="name">名前 : </label>
-    <input type="name" name="name" v-model="form_name"/>
-    <label for="email">メールアドレス : </label>
-    <input type="email" name="email" v-model="form_email"/>
-    <button class="button" v-on:click="post">ユーザー作成</button>
-  </div>
+  <v-container>
+    <h1 style="text-align:left">MySQL DB Post Form</h1>
+        <v-form
+          ref="form"
+          v-model="valid"
+          class="user-form"
+        >
+        <v-container fluid>
+          <v-row>
+            <v-col
+              cols="12"
+              md="12"
+            >
+            <v-text-field
+              name="name"
+              v-model="form_name"
+              :counter="20"
+              :rules="nameRules"
+              label="名前"
+              append-icon="person"
+              required
+            ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              md="12"
+            >
+            <v-text-field
+              name="email"
+              v-model="form_email"
+              :counter="50"
+              :rules="emailRules"
+              label="メールアドレス"
+              append-icon="email"
+              required
+            ></v-text-field>
+            </v-col>
+            <v-btn @click="post">ユーザー作成</v-btn>
+          </v-row>
+        </v-container>
+        </v-form>
+  </v-container>
 </template>
 
 <script>
@@ -29,7 +63,7 @@ export default {
       .then(response =>  {
         alert('Success!')
         console.log(response);
-        this.$router.push('/list');
+        this.$router.push('/');
       })
       .catch((error) => {alert(error)});
     }
@@ -43,5 +77,8 @@ export default {
 <style scoped>
 h3 {
   margin: 40px 0 0;
+}
+.user-form {
+  width: 360px;
 }
 </style>

@@ -44,6 +44,7 @@
 </template>
 
 <script>
+console.log(`Your access API PATH is ${process.env.VUE_APP_API_ORIGIN}`);
 export default {
   name: 'UserForm',
   data: function(){
@@ -61,8 +62,9 @@ export default {
         }
       })
       .then(response =>  {
-        alert('Success!')
-        console.log(response);
+        if(response){
+          alert('Success!')
+        }
         this.$router.push('/');
       })
       .catch((error) => {alert(error)});

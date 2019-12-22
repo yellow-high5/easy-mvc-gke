@@ -36,6 +36,8 @@ If you can access localhost or public ip on GKE Service, you should see the foll
 
 ![screenshot](https://user-images.githubusercontent.com/14067398/71311144-3dc4f600-2460-11ea-8f21-cd3cf736a6d0.png)
 
+"No data available" maybe signs you cannot connect your CloudSQL MySQL DB correctly
+
 ## Licence
 
 [MIT](https://opensource.org/licenses/MIT)

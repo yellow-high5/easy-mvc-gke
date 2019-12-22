@@ -136,8 +136,7 @@
 </template>
 
 <script>
-console.log(process.env.VUE_APP_API_ORIGIN);
-console.log('hello')
+console.log(`Your access API PATH is ${process.env.VUE_APP_API_ORIGIN}`);
 export default {
   name: 'UserList',
   data: function(){
@@ -176,7 +175,7 @@ export default {
           this.users.push(user)
         })
       })
-      .catch((error) => {console.log(error)});
+      .catch((error) => {alert(error)});
   },
   methods: {
     update: function() {

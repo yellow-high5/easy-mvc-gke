@@ -55,18 +55,29 @@ gcloud sql databases create easy_mvc_db \
 
 
 
-# 環境変数の定義
-# Cloud SQLのプライベートIPアドレス
+# 
+# Cloud SQLのプライベートIPアドレスの環境変数を定義
 export CLOUDSQL_MYSQL_HOST=$(gcloud sql instances describe mysql-service-gke --format="value(ipAddresses[].ipAddress)")
-# 現在のプロジェクトID(=YOUR_PROJECT_ID)
+# 現在のプロジェクトID(=YOUR_PROJECT_ID)の環境変数を定義
 export PROJECT_ID=$(gcloud config get-value project)
 
 #ConfigMapを作成してマニュフェストファイルで利用する
 kubectl create configmap app-config --from-literal=project.id=${PROJECT_ID} --from-literal=db.host=${CLOUDSQL_MYSQL_HOST} 
 
-# Dockerfileをビルドしてコンテナレジストリへイメージをプッシュする
-gcloud builds submit easy-mvc-gke/vuejs-app-gke --tag gcr.io/${PROJECT_ID}/vuejs-app-gke
+# Spring Boot(API側)のDockerfileをビルドしてコンテナレジストリへイメージをプッシュする
 gcloud builds submit easy-mvc-gke/springboot-app-gke --tag gcr.io/${PROJECT_ID}/springboot-app-gke
 
-# リソースファイルをkubectlで適用(project-all-in-oneはmanifestsディレクトリにあるyamlをまとめたもの)
-kubectl apply -f easy-mvc-gke/project-all-in-one.yml
+# APIのリソースファイルをkubectlで適用(backend-all-in-oneはmanifestsディレクトリにあるバックエンドに関するyamlをまとめたもの)
+kubectl apply -f easy-mvc-gke/backend-all-in-one.yml
+
+# サービスで定義したAPIのエンドポイントの環境変数を定義
+export API_SERVICE_IP=$(kubectl get svc backend -o json | jq .status.loadBalancer.ingress[0].ip)
+API_SERVICE_PORTAPI_SERVICE_PORT=$(kubectl get svc backend -o json | jq .spec.ports[0].port)
+
+# Vue.jsのDockerfileをビルドしてコンテナレジストリへイメージをプッシュする
+gcloud builds submit easy-mvc-gke/vuejs-app-gke \
+  --substitutions API_PATH=https:${API_SERVICE_IP}:${API_SERVICE_PORT}
+  --tag gcr.io/${PROJECT_ID}/vuejs-app-gke
+
+# クライアントのリソースファイルをkubectlで適用(frontend-all-in-oneはmanifestsディレクトリにあるフロントエンドに関するyamlをまとめたもの)
+kubectl apply -f easy-mvc-gke/frontend-all-in-one.yml

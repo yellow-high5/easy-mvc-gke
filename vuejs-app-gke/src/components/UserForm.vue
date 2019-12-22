@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     post: function(){
-      fetch(`http://localhost:8080/users/new/?name=${this.form_name}&email=${this.form_email}`, {
+      fetch(`${process.env.VUE_APP_API_ORIGIN}/users/new/?name=${this.form_name}&email=${this.form_email}`, {
         method: "POST",
         headers:{
           'Content-Type': 'application/json'

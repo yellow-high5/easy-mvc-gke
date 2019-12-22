@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ARG API_PATH
+ENV VUE_APP_API_ORIGIN=${API_PATH}
 RUN npm run build
 
 # 本番環境(NGINX)

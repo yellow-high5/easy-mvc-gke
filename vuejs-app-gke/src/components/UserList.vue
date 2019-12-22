@@ -136,6 +136,8 @@
 </template>
 
 <script>
+console.log(process.env.VUE_APP_API_ORIGIN);
+console.log('hello')
 export default {
   name: 'UserList',
   data: function(){
@@ -165,7 +167,7 @@ export default {
     }
   },
   created: function(){
-    fetch("http://localhost:8080/users")
+    fetch(`${process.env.VUE_APP_API_ORIGIN}/users`)
       .then(response =>  {
         return response.json();
       })
@@ -180,7 +182,7 @@ export default {
     update: function() {
       this.update_dialog = false
       var user = this.select_user[0]
-      fetch(`http://localhost:8080/users/${user.id}/update/?name=${user.name}&email=${user.email}`, {
+      fetch(`${process.env.VUE_APP_API_ORIGIN}/users/${user.id}/update/?name=${user.name}&email=${user.email}`, {
         method: "PUT",
         headers:{
           'Content-Type': 'application/json'
@@ -197,7 +199,7 @@ export default {
     remove: function() {
       this.delete_dialog = false
       var user = this.select_user[0]
-      fetch(`http://localhost:8080/users/${user.id}/delete`, {
+      fetch(`${process.env.VUE_APP_API_ORIGIN}/users/${user.id}/delete`, {
         method: "DELETE",
         headers:{
           'Content-Type': 'application/json'

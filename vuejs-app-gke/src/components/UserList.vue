@@ -16,30 +16,110 @@
         cols="12"
         md="6"
       >
-        <v-btn 
-          :disabled="selectedUser()"
-          color="#41B883"
-          class="white--text"
-          @click="update" 
-          style="margin: 0.5rem;"
+        <!--更新-->
+        <v-dialog
+          v-model="update_dialog"
+          width="500"
         >
-          ユーザー更新
-        </v-btn>
-        <v-btn 
-          :disabled="selectedUser()"
-          color="#34495E"
-          class="white--text"
-          @click="remove" 
-          style="margin: 0.5rem;"
+          <template v-slot:activator="{ on }">
+            <v-btn
+              :disabled="selectedUser()"
+              v-on="on"
+              color="#41B883"
+              class="white--text" 
+              style="margin: 0.5rem;"
+            >
+              ユーザー更新
+            </v-btn>
+          </template>
+
+          <v-card>
+            <v-form>
+            <v-card-title>
+              更新情報
+            </v-card-title>
+
+            <v-card-text>              
+              <v-text-field
+                name="name"
+                v-model="select_user[0].name"
+                :counter="20"
+                label="名前"
+                append-icon="person"
+                required
+              ></v-text-field>
+              <v-text-field
+                name="email"
+                v-model="select_user[0].email"
+                :counter="50"
+                label="メールアドレス"
+                append-icon="email"
+                required
+              ></v-text-field>
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="#41B883"
+                class="white--text"
+                @click="update"
+              >
+                更新する
+              </v-btn>
+            </v-card-actions>
+            </v-form>
+          </v-card>
+        </v-dialog>
+        <!--削除-->
+        <v-dialog
+          v-model="delete_dialog"
+          width="500"
         >
-          ユーザー削除
-        </v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              :disabled="selectedUser()"
+              v-on="on"
+              color="#34495E"
+              class="white--text"
+              style="margin: 0.5rem;"
+            >
+              ユーザー削除
+            </v-btn>
+          </template>
+
+          <v-card>
+            <v-form>
+            <v-card-title>
+              削除
+            </v-card-title>
+
+            <v-card-text>              
+              本当に削除しますか？
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="#EF5350"
+                class="white--text"
+                @click="remove"
+              >
+                削除する
+              </v-btn>
+            </v-card-actions>
+            </v-form>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
     <v-data-table
       v-model="select_user"
       class="transparent"
-      loading-text="ユーザーが見つかりません。MySQLとの接続に問題がある可能性があります。"
       :headers="headers"
       :items="users"
       :items-per-page="5"
@@ -61,9 +141,12 @@ export default {
   data: function(){
     return {
       form_query: "",
-      select_user: [],
+      update_dialog: false,
+      delete_dialog: false,
+      select_user: [{name: null, email: null}],
       selectedUser: function() {
-        if(this.select_user.length === 0){
+        var user = this.select_user[0]
+        if(this.select_user[0] == null || (user.name === null && user.email === null)){
           return true
         }
         return false
@@ -95,23 +178,25 @@ export default {
   },
   methods: {
     update: function() {
+      this.update_dialog = false
       var user = this.select_user[0]
-      fetch(`http://localhost:8080/users/${user.id}/update/?name=White&email=white@sample.com`, {
+      fetch(`http://localhost:8080/users/${user.id}/update/?name=${user.name}&email=${user.email}`, {
         method: "PUT",
         headers:{
           'Content-Type': 'application/json'
         }
       })
       .then(response =>  {
-        alert(`${user.id}:${user.name} is updated!`)
-        console.log(response);
-        this.$router.push('/');
+        if(response){
+          this.$router.go({path: '/', force: true})
+        }
+        // this.$router.push('/');
       })
       .catch((error) => {alert(error)});
     },
     remove: function() {
+      this.delete_dialog = false
       var user = this.select_user[0]
-      alert(`${user.id}:${user.name}を本当に削除しますか？`);
       fetch(`http://localhost:8080/users/${user.id}/delete`, {
         method: "DELETE",
         headers:{
@@ -119,12 +204,13 @@ export default {
         }
       })
       .then(response =>  {
-        alert(`${user.id}:${user.name} is deleted`)
-        console.log(response);
-        this.$router.push('/');
+        if(response){
+          this.$router.go({path: '/', force: true})
+        }
+        // this.$router.push('/');
       })
       .catch((error) => {alert(error)});
-    }
+    },
   }
 }
 

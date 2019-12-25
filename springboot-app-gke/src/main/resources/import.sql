@@ -1,0 +1,12 @@
+INSERT INTO users (id, name, email) VALUES (1, 'Red', 'red@sample.com');
+INSERT INTO users (id, name, email) VALUES (2, 'Yellow', 'yellow@sample.com');
+INSERT INTO users (id, name, email) VALUES (3, 'Blue', 'blue@sample.com');
+INSERT INTO users (id, name, email) VALUES (4, 'Green', 'green@sample.com');
+INSERT INTO users (id, name, email) VALUES (5, 'Pink', 'pink@sample.com');
+INSERT INTO users (id, name, email) VALUES (6, 'Orange', 'orange@sample.com');
+INSERT INTO users (id, name, email) VALUES (7, 'Purple', 'purple@sample.com');
+INSERT INTO users (id, name, email) VALUES (8, 'White', 'white@sample.com');
+INSERT INTO users (id, name, email) VALUES (9, 'Black', 'black@sample.com');
+INSERT INTO users (id, name, email) VALUES (10, 'Brown', 'brown@sample.com');
+INSERT INTO users (id, name, email) VALUES (11, 'Gold', 'gold@sample.com');
+INSERT INTO users (id, name, email) VALUES (12, 'Silver', 'silver@sample.com');

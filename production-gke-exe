@@ -1,7 +1,11 @@
+#!/bin/bash
+
 # Kubernets Engine APIが有効であることを確認
 # https://console.cloud.google.com/apis/library/container.googleapis.com?q=kubernetes+engine&hl=ja&_ga=2.238662912.-1473604364.1575704135
-# プロジェクトIDを設定
-gcloud config set project [YOUR_PROJECT_ID]
+
+# 現在のプロジェクトIDを環境変数として定義
+export PROJECT_ID="$1"
+echo "On:${PROJECT_ID}, Create Easy MVC Application and its Kubernetes Cluster..."
 
 # VPCネットワーク作成
 gcloud compute networks create gke-network --subnet-mode custom
@@ -36,7 +40,7 @@ gcloud services vpc-peerings connect \
     --service=servicenetworking.googleapis.com \
     --ranges=sql-allocated-range \
     --network=gke-network \
-    --project=[YOUR_PROJECT_ID]
+    --project=${PROJECT_ID}
 
 # CloudSQL MySQLインスタンス(プライベートIPアドレス割り当て)の作成
 gcloud beta sql instances create mysql-service-gke \
@@ -54,18 +58,29 @@ gcloud sql databases create easy_mvc_db \
   --instance=mysql-service-gke
 
 
-
-
 # Cloud SQLのプライベートIPアドレスの環境変数を定義
 export CLOUDSQL_MYSQL_HOST=$(gcloud sql instances describe mysql-service-gke --format="value(ipAddresses[].ipAddress)")
-# 現在のプロジェクトID(=YOUR_PROJECT_ID)の環境変数を定義
-export PROJECT_ID=$(gcloud config get-value project)
+
+# ymlファイル書き換え
+# all-in-oneフォルダ内のプロジェクトID名を置換
+dir_all_in_one=`find all-in-one -type f -maxdepth 1`
+for file in $dir_all_in_one;
+do
+    sed -i -e "s/YOUR_PROJECT_ID/${PROJECT_ID}/" $file
+done
+# manifestsフォルダ内のプロジェクトID名を置換
+dir_manifests=`find manifests -type f -maxdepth 1`
+for file in $dir_manifests;
+do
+    sed -i -e "s/YOUR_PROJECT_ID/${PROJECT_ID}/" $file
+done
 
 #ConfigMapを作成してマニュフェストファイルで利用する
 kubectl create configmap app-config --from-literal=project.id=${PROJECT_ID} --from-literal=db.host=${CLOUDSQL_MYSQL_HOST} 
 
 # Spring Boot(API側)のDockerfileをビルドしてコンテナレジストリへイメージをプッシュする
-gcloud builds submit easy-mvc-gke/springboot-app-gke --tag gcr.io/${PROJECT_ID}/springboot-app-gke
+docker build --tag gcr.io/${PROJECT_ID}/springboot-app-gke easy-mvc-gke/springboot-app-gke
+docker push gcr.io/${PROJECT_ID}/springboot-app-gke
 
 # APIのリソースファイルをkubectlで適用(backend-all-in-oneはmanifestsディレクトリにあるバックエンドに関するyamlをまとめたもの)
 # *コントローラーで定義したイメージのパスを書き換える必要あり
@@ -80,10 +95,8 @@ export API_SERVICE_PORT=$(kubectl get svc backend -o json | jq .spec.ports[0].po
 docker build --build-arg API_PATH=http://${API_SERVICE_IP}:${API_SERVICE_PORT} --tag gcr.io/${PROJECT_ID}/vuejs-app-gke easy-mvc-gke/vuejs-app-gke
 docker push gcr.io/${PROJECT_ID}/vuejs-app-gke
 
-# gcloud builds submit easy-mvc-gke/vuejs-app-gke \
-#   --substitutions _API_PATH=https:${API_SERVICE_IP}:${API_SERVICE_PORT} \
-#   --tag gcr.io/${PROJECT_ID}/vuejs-app-gke
-
 # クライアントのリソースファイルをkubectlで適用(frontend-all-in-oneはmanifestsディレクトリにあるフロントエンドに関するyamlをまとめたもの)
 # *コントローラーで定義したイメージのパスを書き換える必要あり
 kubectl apply -f easy-mvc-gke/all-in-one/frontend-all-in-one.yml
+
+echo "Complete Deployment!"

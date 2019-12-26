@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: vue
-        image: gcr.io/${PROJECT_ID}/vuejs-app-gke
+        image: gcr.io/YOUR_PROJECT_ID/vuejs-app-gke
         resources:
           requests:
             cpu: 100m

@@ -1,34 +1,6 @@
 version: '3'
 services:
 
-  client:
-    build:
-      context: ./vuejs-app-gke/.
-      args:
-        - API_PATH=http://localhost:8080
-    container_name: vuejs
-    environment:
-      NODE_ENV: development
-    ports:
-      - 80:80
-    networks:
-      - frontend
-
-  api:
-    build: 
-      context: ./springboot-app-gke/.
-      args:
-        - DEPLOY_ENV=docker
-    container_name: springboot
-    depends_on: 
-      - database
-    ports:
-      - 8080:8080
-    networks:
-      - frontend
-      - backend
-
-
   database:
     image: mysql:5.7
     container_name: mysql
@@ -40,8 +12,33 @@ services:
     volumes: 
       - ./mysql-db-local:/var/lib/mysql
     ports:
-      - 3306:3306
+      - "3306:3306"
     networks:
+      - backend
+
+  client:
+    build:
+      context: ./vuejs-app-gke/.
+      args:
+        - API_PATH=http://localhost:8080
+    container_name: vuejs
+    environment:
+      NODE_ENV: development
+    ports:
+      - "80:80"
+    networks:
+      - frontend
+
+  api:
+    build: ./springboot-app-gke/.
+    container_name: springboot
+    depends_on: 
+      - "database"
+    entrypoint: sh -c "./wait-for database:3306 -t 60 -- java -Dspring.profiles.active=docker -jar app.jar"
+    ports:
+      - "8080:8080"
+    networks:
+      - frontend
       - backend
 
 networks:

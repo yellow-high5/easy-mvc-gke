@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: springboot
-        image: gcr.io/${PROJECT_ID}/springboot-app-gke
+        image: gcr.io/YOUR_PROJECT_ID/springboot-app-gke
         env:
         - name: CLOUDSQL_MYSQL_HOST
           valueFrom:

@@ -17,27 +17,29 @@ Maybe, it takes a long time to `mvn install` in build stage of Dockerfile.
 $ git clone https://github.com/yellow-high5/easy-mvc-gke.git
 $ cd easy-mvc-gke
 $ docker-compose build
-$ docker-compose up -d
+$ docker-compose up
 ```
 
 ### Google Kubernetes Engine
-You need Google Cloud Platform Account. 
-👉You need checking Kubernets Engine API and Service Networking API is enabled   
+You need Google Cloud Platform Account.   
+👉You need checking Kubernets Engine API and Service Networking API is enabled     
 cf. My GKE Version: 1.13.11-gke.14  
 
 ```sh
 # On your Google Cloud Shell
+$ gcloud config set project [YOUR_PROJECT_ID]
 $ git clone https://github.com/yellow-high5/easy-mvc-gke.git
 $ cd easy-mvc-gke
-$ sh production-gke-exe.sh
+$ chmod 700 ./production-gke-exe
+$ sh -c "production-gke-exe $(gcloud config get-value project)"
 ```
 
 ### If it works correctly...
 If you can access localhost or public ip on GKE Service, you should see the following screen.  
 
-![screenshot](https://user-images.githubusercontent.com/14067398/71311144-3dc4f600-2460-11ea-8f21-cd3cf736a6d0.png)
+<img width="1043" alt="screenshot-interface" src="https://user-images.githubusercontent.com/14067398/71486087-ece64080-2857-11ea-89fc-f53cbf678961.png">
 
-"No data available" maybe signs you cannot connect your CloudSQL MySQL DB correctly
+"No data available" maybe signs you have no data in CloudSQL MySQL DBor you cannot connect your CloudSQL MySQL DB correctly.
 
 ## Licence
 

@@ -16,7 +16,5 @@ ENTRYPOINT ["java","-Dspring.profiles.active=gke","-jar","app.jar"]
 # FROM openjdk:8-jdk-alpine
 # VOLUME /tmp
 # ARG JAR_FILE=target/*.jar
-# ARG DEPLOY_ENV="gke"
-# ENV APP_PROFILE=${DEPLOY_ENV}
 # COPY ${JAR_FILE} app.jar
-# ENTRYPOINT ["java","-Dspring.profiles.active=${APP_PROFILE}","-jar","app.jar"]
+# ENTRYPOINT ["java","-Dspring.profiles.active=gke","-jar","app.jar"]

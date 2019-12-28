@@ -31,7 +31,7 @@ $ gcloud config set project [YOUR_PROJECT_ID]
 $ git clone https://github.com/yellow-high5/easy-mvc-gke.git
 $ cd easy-mvc-gke
 $ chmod 700 ./production-gke-exe
-$ sh -c "production-gke-exe $(gcloud config get-value project)"
+$ sh production-gke-exe $(gcloud config get-value project)
 ```
 
 ### If it works correctly...
@@ -39,7 +39,12 @@ If you can access localhost or public ip on GKE Service, you should see the foll
 
 <img width="1043" alt="screenshot-interface" src="https://user-images.githubusercontent.com/14067398/71486087-ece64080-2857-11ea-89fc-f53cbf678961.png">
 
-"No data available" maybe signs you have no data in CloudSQL MySQL DBor you cannot connect your CloudSQL MySQL DB correctly.
+"No data available" maybe signs you have no data or you cannot connect in your CloudSQL MySQL DB correctly.
+
+## Thanks for the hint
+* [https://cloud.google.com/kubernetes-engine/docs]https://cloud.google.com/kubernetes-engine/docs
+* [https://github.com/eficode/wait-for]https://github.com/eficode/wait-for
+
 
 ## Licence
 
